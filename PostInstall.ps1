@@ -333,7 +333,7 @@ function Set-M365Insider {
 
 # Remove apps installed by default
 function Remove-Apps {
-
+	# Loop through each app in the list
     Foreach ($app in $AppsToUninstall) { 
         Write-Log "Attempting to remove $app..."
 
@@ -351,7 +351,8 @@ function Remove-Apps {
 				Write-Log "...Unable to remove $app for all users" 
 				Write-Log $psitem.Exception.StackTrace
 			}
-
+			
+			# Try removing the app from the provisioned package so that other new users will not get them either
 			try {
                 Get-AppxProvisionedPackage -Online | Where-Object { $_.PackageName -like $app } | ForEach-Object { Remove-ProvisionedAppxPackage -Online -AllUsers -PackageName $_.PackageName }
             }
@@ -376,10 +377,11 @@ function Create-EdgeProfiles {
 	$avatar_array = @('22','24','26','28','30','32','34','36','38')
 
 	foreach ($profile in $EdgeProfiles) {
-
+		# Create a profile path for this profile
 		$profilePath = "profile-" + $profile.replace(' ', '-')
 		Write-Log "Creating Edge profile for $profile in path $profilePath..."
 
+		# Create the profile
 		$proc = Start-Process -FilePath "C:\Program Files (x86)\Microsoft\$EdgeType\Application\msedge.exe" -ArgumentList "--profile-directory=$profilePath --no-first-run --no-default-browser-check --flag-switches-begin --flag-switches-end --site-per-process" -PassThru
 
 		Write-Output "Profile $profile created, wait 15 seconds before closing Edge"
@@ -446,15 +448,16 @@ function Update-TaskbarIcons {
 function Set-Layout {
 	param ($layout)
 
-	Write-Output $layout
 	# prepare provisioning folder
 	[System.IO.FileInfo]$provisioning = "$($env:ProgramData)\provisioning\taskbar_layout.xml"
 	if (!$provisioning.Directory.Exists) {
 	    $provisioning.Directory.Create()
 	}
 
+	# save the layout XML to the provisioning folder
 	$layout | Out-File $provisioning.FullName -Encoding utf8
 
+	# setup objects for registry updates
 	$settings = [PSCustomObject]@{
 	    Path  = "SOFTWARE\Policies\Microsoft\Windows\Explorer"
 	    Value = $provisioning.FullName
@@ -467,6 +470,7 @@ function Set-Layout {
 	    Name  = "LockedStartLayout"
 	} | group Path
 
+	# update regstry with this layout
 	foreach ($setting in $settings) {
 	    $registry = [Microsoft.Win32.Registry]::LocalMachine.OpenSubKey($setting.Name, $true)
 	    if ($null -eq $registry) {
