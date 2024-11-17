@@ -309,7 +309,7 @@ function Set-ExplorerDefaults {
 	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Clipboard" -Name "EnableCloudClipboard" -Type Dword -Value 1
 	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Clipboard" -Name "CloudClipboardAutomaticUpload" -Type Dword -Value 1
 
-	## Widget Registry Keys are now restricted in Win11 24H2. Moved to disable Widgets instead.
+	## Widget Registry Keys are now restricted in Win11 24H2. Moved to Remove-Widgets function instead.
 	#Write-Log "Hiding Widgets..."
 	#Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "TaskbarDa" -Type DWord -Value 0
 
