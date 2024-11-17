@@ -47,6 +47,7 @@ The script sets the following defaults for Windows/File Explorer:
 - Clipboard History & Cloud Sync are Enabled
 - Windows Theme is set to Dark
 - The Search in Taskbar is set to Icon mode
+- Moves all icons created by newly installed application off the Desktop and into an Applications folder under the current user's profile folder
 
 Notes: 
 1. Widgets are disabled and also turned off, but due to a change in Windows 11 24H2, this is done in a different function called `Remove-Widgets`.
@@ -81,7 +82,7 @@ You can customize the icons pinned to the Taskbar. You can add a list of icons t
 
 To know how to customize this XML, read [Customize the Windows 11 Taskbar](https://learn.microsoft.com/en-us/windows-hardware/customize/desktop/customize-the-windows-11-taskbar). To get a list of Application IDs to use in the XML, run `Get-StartApps` in a Terminal Window as Administrator.
 
-### TODO
+## TODO
 The following are the things I wish to add to this script. 
 - Clear Start Menu of all default pinned apps. This is possible to do via a binary file replacement as being done in Win11Debloat. However, I want to do this from within the script using commands and not a hack like that.
 - Change the theme for each Edge profile that is created. I haven't found a way to do that yet.
