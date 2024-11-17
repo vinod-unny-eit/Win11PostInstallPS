@@ -5,7 +5,7 @@ A Windows 11 (24H2) Post Install Script in PowerShell to customize your working 
 - Remove unwanted apps from installation $^{*}$
 - Set Windows Explorer defaults $^{+}$
 - Choose Performance Power Settings $^{+}$
-- Enable Microsoft 365 Insiders Beta Channel for Office applications $^{+\#}$
+- Enable Microsoft 365 Insiders Beta Channel for Office applications $^{+}$<sup>#</sup>
 - Update all remaining installed applications
 - Update Windows with all current updates available
 - Install from a list curated applications $^{*}$
