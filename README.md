@@ -9,7 +9,7 @@ A Windows 11 (24H2) Post Install Script in PowerShell to customize your working 
 - Update all remaining installed applications
 - Update Windows with all current updates available
 - Install from a list curated applications $^{*}$
-- Install custom applications from the internet and perform actions $^{*}$
+- Install custom applications from the internet and perform actions (v1.1 New) $^{*}$
 - Create a bunch of Microsoft Edge Profiles for use with different clients $^{*}$
 - Add additional folders to the environment PATH variable $^{*}$
 - Update Taskbar icons $^{*}$
