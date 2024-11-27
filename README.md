@@ -73,9 +73,11 @@ To set this up, you need to add a new custom object into the array named `$Custo
 
 #### Examples
 `$CustomInstallArray += [CustomInstaller]::new("YT DLP", 'https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp.exe', 'c:\Portable\YT-DLP', [CustomInstallAction]::Ignore, $null)`
+
 This downloads YT-DLP into the C:\Portable\YT-DLP folder (which is created if it doesn't exist) from the given URL, but doesn't do any installer or post-install actions.
 
 `$CustomInstallArray += [CustomInstaller]::new('YT FFMpeg', 'https://github.com/yt-dlp/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-win64-gpl.zip', 'c:\Portable\YT-DLP', [CustomInstallAction]::Unzip, 'mv ffmpeg-master*\bin\* c:\Portable\YT-DLP;Remove-Item ffmpeg-master* -Force -Recurse')`
+
 This downloads the custom build of FFMPEG into the same folder and then unzips the archive as part of the install process. As part of the custom post-install, the files in the subdirectory "bin" are moved to the main folder and all the files and folders starting with "ffmpeg-master" are deleted.
 
 There are a few more examples in the script as well.
@@ -107,6 +109,9 @@ To know how to customize this XML, read [Customize the Windows 11 Taskbar](https
     - Initial Release
 * Version 1.1, Nov 26, 2024
     - Added ability to perform custom application installs from EXE or ZIP. Useful for portable apps like Rufus, YT-DLP or SysInternals
+* Version 1.2, Nov 28, 2024
+    - Bugfix to allow spaces in destination path for custom installs
+    - Added Microsoft.PowerShell in the Winget apps list
 
 ## TODO
 The following are the things I wish to add to this script. 

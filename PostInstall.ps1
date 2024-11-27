@@ -66,6 +66,7 @@ $WingetAppList = @(
 	"Foxit.FoxitReader",
 	"Microsoft.Edge.Dev",
 	"Microsoft.Office",
+	"Microsoft.Powershell",
 	"Nvidia.GeForceExperience",
 	"agalwood.Motrix",
 	"mRemoteNG.mRemoteNG",
@@ -173,6 +174,8 @@ $CustomInstallArray += [CustomInstaller]::new("Handbrake", 'https://github.com/H
 $CustomInstallArray += [CustomInstaller]::new("Zoomit", 'https://download.sysinternals.com/files/ZoomIt.zip', 'd:\Portable\Sysinternals', [CustomInstallAction]::Unzip, $null)
 $CustomInstallArray += [CustomInstaller]::new("Procmon", 'https://download.sysinternals.com/files/ProcessExplorer.zip', 
 	'd:\Portable\Sysinternals', [CustomInstallAction]::Unzip, "Remove-Item d:\Portable\SysInternals\*.zip -Force")
+$CustomInstallArray += [CustomInstaller]::new("VS Code", 'https://vscode.download.prss.microsoft.com/dbazure/download/stable/f1a4fb101478ce6ec82fe9627c43efbf9e98c813/VSCode-win32-x64-1.95.3.zip', 
+	'd:\Portable\VSCode', [CustomInstallAction]::Unzip, "Remove-Item d:\Portable\VSCode\*.zip -Force")
 
 # App Paths to add
 $Paths = @(
@@ -587,17 +590,17 @@ function Install-Custom {
 		[System.IO.Directory]::CreateDirectory("$($item.Path)") | Out-Null
 		$filename = Get-FilenameFromURL -url $($item.Url)
 		$extension = [System.IO.Path]::GetExtension($filename)
-		$Destpath = Join-Path $($Item.Path) $filename
+		$Destpath = Join-Path "$($Item.Path)" $filename
 		Write-Log "...Downloading $($item.Name) to $DestPath..."
-		Invoke-WebRequest -Uri $($item.Url) -Outfile $DestPath
+		Invoke-WebRequest -Uri "$($item.Url)" -Outfile "$DestPath"
 	  
 		if ($extension -eq '.zip' -and $($item.Action) -eq [CustomInstallAction]::Unzip) {
 			Write-Log "...Unzipping $($item.Name) to $($item.Path)..."
-	  		Expand-Archive -LiteralPath $DestPath -DestinationPath $($item.Path) -Force
+	  		Expand-Archive -LiteralPath "$DestPath" -DestinationPath "$($item.Path)" -Force
 		}
 		elseif ($extension -eq '.exe' -and $($item.Action) -eq [CustomInstallAction]::Install) {
 			Write-Log "...Starting install of $($item.Name) ..."
-	  		Start-Process -Path $DestPath
+	  		Start-Process -Path "$DestPath"
 		}
 		else {
 			Write-Log "...No applicable action found."
@@ -605,7 +608,7 @@ function Install-Custom {
 
 		if($($item.PostInstallScript) -ne $null -and $($item.PostInstallScript) -ne "") {
 			Write-Log "...Performing post install script..."
-			Set-Location $($item.Path)	# Go to the install folder
+			Set-Location "$($item.Path)"	# Go to the install folder
 			Invoke-Expression $($item.PostInstallScript)
 			Set-Location - # Return to previous folder
 		}
